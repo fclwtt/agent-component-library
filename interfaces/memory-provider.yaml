@@ -1,0 +1,64 @@
+name: MemoryProvider
+description: 记忆提供者接口，定义记忆系统的标准行为
+methods:
+- name: name
+  type: property
+  returns: str
+  description: 提供者名称
+- name: is_available
+  type: method
+  returns: bool
+  description: 检查是否可用
+- name: initialize
+  type: method
+  params:
+    session_id: str
+    '**kwargs': Any
+  returns: None
+  description: 初始化记忆提供者
+- name: system_prompt_block
+  type: method
+  returns: str
+  description: 返回系统提示词块
+- name: prefetch
+  type: method
+  params:
+    query: str
+    session_id: str
+  returns: str
+  description: 预取相关记忆
+- name: get_tool_schemas
+  type: method
+  returns: List[Dict]
+  description: 获取工具Schema定义
+- name: handle_tool_call
+  type: method
+  params:
+    tool_name: str
+    args: Dict
+    '**kwargs': Any
+  returns: str
+  description: 处理工具调用
+- name: shutdown
+  type: method
+  returns: None
+  description: 关闭提供者
+hooks:
+- name: on_turn_start
+  params:
+  - turn_number
+  - message
+- name: on_session_end
+  params:
+  - messages
+- name: on_session_switch
+  params:
+  - old_session
+  - new_session
+- name: on_pre_compress
+  params:
+  - messages
+- name: on_delegation
+  params:
+  - task
+  - result

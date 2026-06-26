@@ -1,0 +1,14 @@
+name: LLM Client
+id: llm-client
+description: LLM客户端，包含模型调用、适配器（Anthropic、Gemini、Bedrock等）、模型元数据管理
+category: core
+version: 1.0.0
+implementations:
+  hermes:
+    source: NousResearch/hermes-agent
+    commit: '503867864'
+    modules: 15
+interfaces:
+  provides: ['llm-calling', 'provider-profile']
+  requires: ['context-management']
+dependencies: []

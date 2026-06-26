@@ -1,0 +1,14 @@
+name: ContextManagement
+description: 上下文管理接口
+methods:
+- name: compress
+  params:
+    messages: List[Dict]
+    max_tokens: int
+  returns: List[Dict]
+  description: 压缩上下文
+- name: estimate_tokens
+  params:
+    text: str
+  returns: int
+  description: 估算token数

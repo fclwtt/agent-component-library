@@ -1,0 +1,22 @@
+name: ProviderProfile
+description: 模型提供者配置接口
+methods:
+- name: get_hostname
+  returns: str
+  description: 获取API主机名
+- name: prepare_messages
+  params:
+    messages: List[Dict]
+  returns: List[Dict]
+  description: 预处理消息格式
+- name: build_extra_body
+  returns: Optional[Dict]
+  description: 构建额外请求体
+- name: get_max_tokens
+  params:
+    model: Optional[str]
+  returns: Optional[int]
+  description: 获取最大token数
+- name: fetch_models
+  returns: List[Dict]
+  description: 获取可用模型列表

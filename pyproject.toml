@@ -1,0 +1,17 @@
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
+asyncio_mode = "auto"
+markers = [
+    "unit: Unit tests for individual api.py",
+    "integration: Cross-component integration tests",
+    "lint: Static analysis and import isolation checks",
+]
+
+[tool.isort]
+profile = "black"
+line_length = 100
+
+[tool.coverage.run]
+source = ["components"]
+omit = ["*/hermes/*"]

@@ -1,0 +1,14 @@
+name: CLI System
+id: cli
+description: 命令行界面系统，包含CLI命令、子命令、配置管理、显示系统、认证等
+category: interface
+version: 1.0.0
+implementations:
+  hermes:
+    source: NousResearch/hermes-agent
+    commit: '503867864'
+    modules: 192
+interfaces:
+  provides: []
+  requires: ['llm-calling', 'tool-registry', 'memory-provider']
+dependencies: []
