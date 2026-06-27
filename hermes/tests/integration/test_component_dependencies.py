@@ -15,7 +15,7 @@ from collections import defaultdict
 import pytest
 
 
-COMPONENTS_DIR = Path(__file__).resolve().parent.parent.parent / "hermes_component"
+COMPONENTS_DIR = Path(__file__).resolve().parent.parent.parent
 
 
 # ── 1. 组件列表──────────────────────────────────────────────────
@@ -48,7 +48,7 @@ def _read_layers():
         deps[comp] = set(data.get("dependencies", []))
     return deps
 
-ALL_COMPONENTS = sorted([d.name for d in COMPONENTS_DIR.iterdir() if d.is_dir() and d.name != "__pycache__"])
+ALL_COMPONENTS = sorted([d.name for d in COMPONENTS_DIR.iterdir() if d.is_dir() and d.name not in {"__pycache__", ".pytest_cache", "spec", "audit", "tests"}])
 
 
 # ── 2. Tests ────────────────────────────────────────────────────────────
@@ -63,11 +63,11 @@ class TestApiPyExists:
 
 
 class TestPackageInit:
-    """验证 hermes_component/__init__.py 可用"""
+    """验证 hermes/__init__.py 可用"""
 
     def test_init_py_exists(self):
         init_file = COMPONENTS_DIR / "__init__.py"
-        assert init_file.exists(), "hermes_component/__init__.py missing"
+        assert init_file.exists(), "hermes/__init__.py missing"
 
     def test_init_maps_all_components(self):
         """验证 __init__.py 映射了所有带中划线的组件"""
@@ -136,11 +136,11 @@ class TestIndexYaml:
     """验证 index.yaml 与实际情况一致"""
 
     def test_index_yaml_exists(self):
-        index_file = COMPONENTS_DIR.parent / "index.yaml"
+        index_file = COMPONENTS_DIR / "index.yaml"
         assert index_file.exists()
 
     def test_index_lists_all_components(self):
-        index_file = COMPONENTS_DIR.parent / "index.yaml"
+        index_file = COMPONENTS_DIR / "index.yaml"
         with open(index_file) as f:
             data = yaml.safe_load(f)
         

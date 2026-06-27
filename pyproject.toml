@@ -13,5 +13,5 @@ license = {text = "MIT"}
 Homepage = "https://github.com/fclwtt/agent-component-library"
 
 [tool.setuptools.packages.find]
-where = ["hermes-component", "magic-orange-component"]
-include = ["hermes_component*", "magic_orange_component*"]
+where = ["hermes-component", "magic-orange"]
+include = ["hermes*", "magic_orange*"]

@@ -10,7 +10,7 @@ import pytest
 from pathlib import Path
 
 
-COMPONENTS_DIR = Path(__file__).resolve().parent.parent.parent / "hermes_component"
+COMPONENTS_DIR = Path(__file__).resolve().parent.parent.parent
 
 
 def parse_api(component_name: str) -> ast.Module:
