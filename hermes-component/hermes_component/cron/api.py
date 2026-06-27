@@ -12,12 +12,12 @@ from typing import Any, Callable, Optional, Protocol
 
 
 # ── Re-exports (for cross-component isolation) ────────────────
-from .hermes.modules.cron.blueprint_catalog import BlueprintFillError, CATALOG, WEEKDAY_PRESETS, blueprint_catalog_entry, fill_blueprint, get_blueprint
-from .hermes.modules.cron.jobs import AmbiguousJobReference, TICKER_INTERVAL_SECONDS, _jobs_lock, claim_job_for_fire, create_job, get_job, get_ticker_heartbeat_age, get_ticker_success_age, list_jobs, load_jobs, mark_job_run, parse_schedule, pause_job, remove_job, resolve_job_ref, resume_job, save_jobs, update_job
-from .hermes.modules.cron.scheduler import _notify_provider_jobs_changed, _resolve_delivery_targets, _resolve_home_env_var, cron_delivery_targets, run_one_job, tick
-from .hermes.modules.cron.scheduler_provider import InProcessCronScheduler, resolve_cron_scheduler
-from .hermes.modules.cron.suggestion_catalog import seed_catalog_suggestions
-from .hermes.modules.cron.suggestions import add_suggestion
+from cron.blueprint_catalog import BlueprintFillError, CATALOG, WEEKDAY_PRESETS, blueprint_catalog_entry, fill_blueprint, get_blueprint
+from cron.jobs import AmbiguousJobReference, TICKER_INTERVAL_SECONDS, _jobs_lock, claim_job_for_fire, create_job, get_job, get_ticker_heartbeat_age, get_ticker_success_age, list_jobs, load_jobs, mark_job_run, parse_schedule, pause_job, remove_job, resolve_job_ref, resume_job, save_jobs, update_job
+from cron.scheduler import _notify_provider_jobs_changed, _resolve_delivery_targets, _resolve_home_env_var, cron_delivery_targets, run_one_job, tick
+from cron.scheduler_provider import InProcessCronScheduler, resolve_cron_scheduler
+from cron.suggestion_catalog import seed_catalog_suggestions
+from cron.suggestions import add_suggestion
 
 # ── Data Types ──────────────────────────────────────────────────────────
 

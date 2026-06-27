@@ -11,7 +11,7 @@ from typing import Any, Optional, Protocol
 
 
 # ── Re-exports (for cross-component isolation) ────────────────
-from .hermes.modules.providers.base import OMIT_TEMPERATURE
+from providers.base import OMIT_TEMPERATURE
 
 # ── Data Types ──────────────────────────────────────────────────────────
 

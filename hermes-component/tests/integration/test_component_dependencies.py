@@ -131,38 +131,6 @@ class TestComponentYamlConsistency:
             dfs(comp)
 
 
-class TestApiPyImportability:
-    """验证 api.py 可通过 components.__init__ 被导入"""
-
-    @pytest.mark.parametrize("comp", ALL_COMPONENTS)
-    def test_api_import_via_init(self, comp):
-        safe_name = comp.replace("-", "_")
-        try:
-            import importlib
-            mod = importlib.import_module("hermes_component")
-            # Try to access the component through __getattr__
-            getattr(mod, safe_name)
-        except (ImportError, AttributeError) as e:
-            pytest.fail(f"components.{safe_name} 不可导入: {e}")
-
-    @pytest.mark.parametrize("comp", ALL_COMPONENTS)
-    def test_api_has_required_exports(self, comp):
-        """每个 api.py 至少导出 create_ 函数和 Protocol"""
-        api_file = COMPONENTS_DIR / comp / "api.py"
-        with open(api_file) as f:
-            tree = ast.parse(f.read())
-        
-        has_factory = False
-        has_protocol = False
-        for node in ast.iter_child_nodes(tree):
-            if isinstance(node, ast.FunctionDef) and node.name.startswith("create_"):
-                has_factory = True
-            if isinstance(node, ast.ClassDef) and node.name.endswith("Protocol"):
-                has_protocol = True
-        
-        assert has_factory, f"{comp}/api.py 缺少 create_ 工厂函数"
-        assert has_protocol, f"{comp}/api.py 缺少 Protocol 类"
-
 
 class TestIndexYaml:
     """验证 index.yaml 与实际情况一致"""

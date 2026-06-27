@@ -13,7 +13,7 @@ from typing import Any, Optional, Protocol
 
 
 # ── Re-exports (for cross-component isolation) ────────────────
-from .hermes.modules.acp_adapter.edit_approval import maybe_require_edit_approval
+from acp_adapter.edit_approval import maybe_require_edit_approval
 
 # ── Data Types ──────────────────────────────────────────────────────────
 

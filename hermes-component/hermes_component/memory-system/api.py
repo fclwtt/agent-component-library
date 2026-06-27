@@ -11,9 +11,9 @@ from typing import Any, Optional, Protocol
 
 
 # ── Re-exports (for cross-component isolation) ────────────────
-from .hermes.modules.plugins.memory.honcho.cli import clone_honcho_for_profile, sync_honcho_profiles_quiet
-from .hermes.modules.plugins.memory.honcho.client import HonchoClientConfig, get_honcho_client, reset_honcho_client, resolve_config_path
-from .hermes.modules.tools.memory_tool import MemoryStore, apply_memory_pending, load_on_disk_store
+from plugins.memory.honcho.cli import clone_honcho_for_profile, sync_honcho_profiles_quiet
+from plugins.memory.honcho.client import HonchoClientConfig, get_honcho_client, reset_honcho_client, resolve_config_path
+from tools.memory_tool import MemoryStore, apply_memory_pending, load_on_disk_store
 
 # ── Data Types ──────────────────────────────────────────────────────────
 

@@ -12,15 +12,15 @@ from typing import Any, Optional, Protocol
 
 
 # ── Re-exports (for cross-component isolation) ────────────────
-from .hermes.modules.plugins.cron_providers.chronos.verify import get_fire_verifier
-from .hermes.modules.plugins.platforms.matrix.adapter import MatrixAdapter
-from .hermes.modules.plugins.platforms.telegram.adapter import TelegramAdapter, _strip_mdv2
-from .hermes.modules.plugins.plugin_utils import SingletonSlot
-from .hermes.modules.plugins.teams_pipeline.runtime import bind_gateway_runtime
-from .hermes.modules.plugins.web.exa.provider import _get_exa_client
-from .hermes.modules.plugins.web.firecrawl.provider import Firecrawl, _firecrawl_backend_help_suffix, _get_firecrawl_client, _get_firecrawl_gateway_url, _is_tool_gateway_ready, check_firecrawl_api_key
-from .hermes.modules.plugins.web.parallel.provider import _get_async_parallel_client, _get_parallel_client
-from .hermes.modules.plugins.web.tavily.provider import _normalize_tavily_documents, _normalize_tavily_search_results, _tavily_request
+from plugins.cron_providers.chronos.verify import get_fire_verifier
+from plugins.platforms.matrix.adapter import MatrixAdapter
+from plugins.platforms.telegram.adapter import TelegramAdapter, _strip_mdv2
+from plugins.plugin_utils import SingletonSlot
+from plugins.teams_pipeline.runtime import bind_gateway_runtime
+from plugins.web.exa.provider import _get_exa_client
+from plugins.web.firecrawl.provider import Firecrawl, _firecrawl_backend_help_suffix, _get_firecrawl_client, _get_firecrawl_gateway_url, _is_tool_gateway_ready, check_firecrawl_api_key
+from plugins.web.parallel.provider import _get_async_parallel_client, _get_parallel_client
+from plugins.web.tavily.provider import _normalize_tavily_documents, _normalize_tavily_search_results, _tavily_request
 
 # ── Data Types ──────────────────────────────────────────────────────────
 

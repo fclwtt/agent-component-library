@@ -11,9 +11,9 @@ from typing import Optional, Protocol
 
 
 # ── Re-exports (for cross-component isolation) ────────────────
-from .hermes.modules.tools.path_security import validate_within_dir
-from .hermes.modules.tools.threat_patterns import scan_for_threats
-from .hermes.modules.tools.tirith_security import ensure_installed, is_platform_supported
+from tools.path_security import validate_within_dir
+from tools.threat_patterns import scan_for_threats
+from tools.tirith_security import ensure_installed, is_platform_supported
 
 # ── Protocols ────────────────────────────────────────────────────────────
 

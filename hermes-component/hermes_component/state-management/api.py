@@ -12,7 +12,7 @@ from typing import Any, Optional, Protocol
 
 
 # ── Re-exports (for cross-component isolation) ────────────────
-from .hermes.modules.tools.credential_files import clear_credential_files, to_agent_visible_cache_path
+from tools.credential_files import clear_credential_files, to_agent_visible_cache_path
 
 # ── Data Types ──────────────────────────────────────────────────────────
 
