@@ -69,7 +69,7 @@ def create_agent_runtime(config: Optional[AgentConfig] = None) -> AgentRuntimePr
     需要依赖：llm-client / tool-system / memory-system / state-management
     这些组件应在调用此工厂前完成初始化。
     """
-    from .hermes.modules.gateway.run import AgentRunner
+    from gateway.run import AgentRunner
     cfg = config or AgentConfig()
     return AgentRunner(
         model=cfg.model,
@@ -80,7 +80,7 @@ def create_agent_runtime(config: Optional[AgentConfig] = None) -> AgentRuntimePr
 
 def create_context_manager() -> ContextManagerProtocol:
     """创建上下文管理器"""
-    from .hermes.modules.agent.context_compressor import ContextCompressor
+    from agent.context_compressor import ContextCompressor
     return ContextCompressor()
 
 
@@ -128,7 +128,7 @@ def clear_conversation_history(session_id: str = "default") -> None:
     """清除会话历史"""
     runtime = create_agent_runtime()
     runtime.get_history(session_id)  # ensure session exists for now
-    from .hermes.modules.gateway.session import SessionManager
+    from gateway.session import SessionManager
     SessionManager().close_session(session_id)
 
 

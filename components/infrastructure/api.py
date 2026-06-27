@@ -39,7 +39,7 @@ def get_logger(name: str) -> LoggerProtocol:
 def create_execution_env(name: str = "docker") -> Optional[ExecutionEnvProtocol]:
     """创建代码执行环境"""
     try:
-        from .hermes.modules.tools.environments.docker_env import DockerExecutionEnv
+        from tools.environments.docker_env import DockerExecutionEnv
         return DockerExecutionEnv()
     except ImportError:
         return None
@@ -47,16 +47,16 @@ def create_execution_env(name: str = "docker") -> Optional[ExecutionEnvProtocol]
 
 def create_evm_client() -> object:
     """创建 EVM 区块链客户端"""
-    from .hermes.modules.gateway.evm_client import EVMClient
+    from gateway.evm_client import EVMClient
 def create_evm_client() -> object:
     """创建 EVM 区块链客户端"""
-    from .hermes.modules.gateway.evm_client import EVMClient
+    from gateway.evm_client import EVMClient
     return EVMClient()
 
 
     """创建代码执行环境"""
     try:
-        from .hermes.modules.tools.environments.docker_env import DockerExecutionEnv
+        from tools.environments.docker_env import DockerExecutionEnv
         return DockerExecutionEnv()
     except ImportError:
         return None
@@ -66,17 +66,17 @@ def create_evm_client() -> object:
 
 def evm_client() -> object:
     """创建 EVM 区块链客户端"""
-    from .hermes.modules.gateway.evm_client import EVMClient
+    from gateway.evm_client import EVMClient
     return EVMClient()
 
 
 def url_safety_checker() -> object:
     """创建 URL 安全检查器"""
-    from .hermes.modules.tools.url_safety import URLSafetyChecker
+    from tools.url_safety import URLSafetyChecker
     return URLSafetyChecker()
 
 
 def path_security_checker() -> object:
     """创建路径安全检查器"""
-    from .hermes.modules.tools.path_security import PathSecurityChecker
+    from tools.path_security import PathSecurityChecker
     return PathSecurityChecker()

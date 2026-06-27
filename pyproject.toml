@@ -1,3 +1,23 @@
+[build-system]
+requires = ["setuptools>=68.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "agent-component-library"
+version = "2.0.0"
+description = "AI Agent组件库 — 标准化的 Agent 组件接口与公共API层"
+requires-python = ">=3.10"
+license = {text = "MIT"}
+dependencies = [
+    "pyyaml>=6.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/fclwtt/agent-component-library"
+
+[tool.setuptools.packages.find]
+include = ["components*"]
+
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 pythonpath = ["."]

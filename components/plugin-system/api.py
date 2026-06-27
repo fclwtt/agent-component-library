@@ -58,13 +58,13 @@ class PlatformRegistryProtocol(Protocol):
 
 def create_plugin_loader() -> PluginLoaderProtocol:
     """创建插件加载器"""
-    from .hermes.modules.plugins.plugin_loader import PluginLoader
+    from plugins.plugin_loader import PluginLoader
     return PluginLoader()
 
 
 def create_platform_registry() -> PlatformRegistryProtocol:
     """创建平台注册表"""
-    from .hermes.modules.plugins.platform_registry import PlatformRegistry
+    from plugins.platform_registry import PlatformRegistry
     return PlatformRegistry()
 
 

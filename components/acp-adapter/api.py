@@ -48,7 +48,7 @@ class ACPAdapterProtocol(Protocol):
 
 def create_acp_adapter() -> ACPAdapterProtocol:
     """创建 ACP 适配器"""
-    from .hermes.modules.acp_adapter.acp_server import ACPServer
+    from acp_adapter.acp_server import ACPServer
     return ACPServer()
 
 

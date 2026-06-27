@@ -58,13 +58,13 @@ class ToolExecutorProtocol(Protocol):
 
 def create_tool_registry() -> ToolRegistryProtocol:
     """创建工具注册表"""
-    from .hermes.modules.tools.registry import ToolRegistry
+    from tools.registry import ToolRegistry
     return ToolRegistry()
 
 
 def create_tool_executor(registry: ToolRegistryProtocol) -> ToolExecutorProtocol:
     """创建工具执行器（包装终端/文件/MCP 等工具）"""
-    from .hermes.modules.tools.terminal_tool import TerminalTool
+    from tools.terminal_tool import TerminalTool
     return TerminalTool()
 
 

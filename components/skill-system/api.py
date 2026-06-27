@@ -47,7 +47,7 @@ class SkillManagerProtocol(Protocol):
 
 def create_skill_manager() -> SkillManagerProtocol:
     """创建技能管理器"""
-    from .hermes.modules.skills.skill_manager import SkillManager
+    from skills.skill_manager import SkillManager
     return SkillManager()
 
 

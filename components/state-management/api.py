@@ -62,7 +62,7 @@ class StateManagerProtocol(Protocol):
 
 def create_config_manager(path: Optional[str] = None) -> ConfigManagerProtocol:
     """创建配置管理器"""
-    from .hermes.modules.gateway.config import ConfigManager
+    from gateway.config import ConfigManager
     cfg = ConfigManager()
     if path:
         cfg.load(path)
@@ -71,11 +71,11 @@ def create_config_manager(path: Optional[str] = None) -> ConfigManagerProtocol:
 
 def create_credential_store(backend: str = "file") -> CredentialStoreProtocol:
     """创建凭据存储"""
-    from .hermes.modules.agent.credential_pool import CredentialPool
+    from agent.credential_pool import CredentialPool
     return CredentialPool()
 
 
 def create_state_manager() -> StateManagerProtocol:
     """创建状态管理器"""
-    from .hermes.modules.gateway.state_manager import StateManager
+    from gateway.state_manager import StateManager
     return StateManager()

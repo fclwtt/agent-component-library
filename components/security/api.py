@@ -29,13 +29,13 @@ class SecurityAuditProtocol(Protocol):
 
 def create_threat_detector() -> ThreatDetectorProtocol:
     """创建威胁检测器"""
-    from .hermes.modules.tools.threat_patterns import ThreatDetector
+    from tools.threat_patterns import ThreatDetector
     return ThreatDetector()
 
 
 def create_security_audit() -> SecurityAuditProtocol:
     """创建安全审计"""
-    from .hermes.modules.tools.audit_logger import AuditLogger
+    from tools.audit_logger import AuditLogger
     return AuditLogger()
 
 
@@ -62,11 +62,11 @@ def audit_event(event: str, detail: str = "") -> None:
 
 def require_auth(token: str) -> bool:
     """验证令牌有效性"""
-    from .hermes.modules.gateway.authz_mixin import AuthChecker
+    from gateway.authz_mixin import AuthChecker
     return AuthChecker().verify_token(token)
 
 
 def is_dangerous_command(command: str) -> bool:
     """判断是否为危险命令"""
-    from .hermes.modules.tools.approval import detect_dangerous_command
+    from tools.approval import detect_dangerous_command
     return detect_dangerous_command(command)

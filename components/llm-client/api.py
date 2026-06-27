@@ -55,11 +55,11 @@ def create_openai_client(config: Optional[ModelConfig] = None) -> LLMCallingProt
 
     延迟导入 hermes 模块，启动时无需加载全部依赖。
     """
-    from .hermes.modules.tools.openrouter_client import OpenRouterClient
+    from tools.openrouter_client import OpenRouterClient
     return OpenRouterClient()
 
 
 def create_provider_profile(name: str, config: dict) -> ProviderProfileProtocol:
     """创建模型提供者配置"""
-    from .hermes.modules.providers.base import ProviderProfile
+    from providers.base import ProviderProfile
     return ProviderProfile(**config)

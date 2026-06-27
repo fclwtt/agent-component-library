@@ -55,10 +55,10 @@ def create_entry_point(mode: str = "cli") -> EntryPointProtocol:
     mode 可选: cli, server, agent
     """
     if mode == "cli":
-        from .hermes.modules.gateway.run import CLIEntryPoint
+        from gateway.run import CLIEntryPoint
         return CLIEntryPoint()
     elif mode == "server":
-        from .hermes.modules.gateway.run import ServerEntryPoint
+        from gateway.run import ServerEntryPoint
         return ServerEntryPoint()
     raise ValueError(f"未知入口点模式: {mode}")
 

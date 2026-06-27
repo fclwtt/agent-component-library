@@ -1,0 +1,3 @@
+{
+  "tests/integration/test_component_dependencies.py::TestLayerOrdering::test_layers_are_correct": true
+}

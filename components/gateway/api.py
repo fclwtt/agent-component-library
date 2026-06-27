@@ -59,19 +59,19 @@ class SessionManagerProtocol(Protocol):
 
 def create_gateway(port: int = 8080) -> GatewayProtocol:
     """创建消息网关"""
-    from .hermes.modules.gateway.run import GatewayRunner
+    from gateway.run import GatewayRunner
     return GatewayRunner(port=port)
 
 
 def create_session_manager() -> SessionManagerProtocol:
     """创建会话管理器"""
-    from .hermes.modules.gateway.session import SessionManager
+    from gateway.session import SessionManager
     return SessionManager()
 
 
 def create_platform_registry() -> object:
     """创建平台注册表"""
-    from .hermes.modules.gateway.platform_registry import PlatformRegistry
+    from gateway.platform_registry import PlatformRegistry
     return PlatformRegistry()
 
 

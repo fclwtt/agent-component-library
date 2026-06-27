@@ -1,42 +1,57 @@
-"""Agent Component Library — Component Package Root
-
-使每个组件的 api.py 可通过 components.{name}.api 导入。
-"""
+"""Agent Component Library — Component Package Root"""
 from __future__ import annotations
-import importlib
-import os
-import sys
-from types import ModuleType
+import os, sys, types
 
-# 全部15个组件的目录名→Python名映射
-_COMPONENT_MAP: dict[str, str] = {
-    "acp_adapter": "acp-adapter",
-    "agent_engine": "agent-engine",
-    "cli": "cli",
-    "cron": "cron",
-    "entry_points": "entry-points",
-    "gateway": "gateway",
-    "infrastructure": "infrastructure",
-    "llm_client": "llm-client",
-    "memory_system": "memory-system",
-    "plugin_system": "plugin-system",
-    "security": "security",
-    "skill_system": "skill-system",
-    "state_management": "state-management",
-    "tool_system": "tool-system",
+_COMPONENT_MAP: dict = {
+    "acp_adapter": "acp-adapter", "agent_engine": "agent-engine",
+    "cli": "cli", "cron": "cron",
+    "entry_points": "entry-points", "gateway": "gateway",
+    "infrastructure": "infrastructure", "llm_client": "llm-client",
+    "memory_system": "memory-system", "plugin_system": "plugin-system",
+    "security": "security", "skill_system": "skill-system",
+    "state_management": "state-management", "tool_system": "tool-system",
     "tui": "tui",
 }
+_DIR = os.path.dirname(__file__)
 
-def __getattr__(name: str) -> ModuleType:
-    """components.{name} → components/{dir}/api.py"""
+def _load_api(dir_name: str):
+    mod_name = f"components.{dir_name}"
+    if mod_name in sys.modules:
+        return sys.modules[mod_name]
+
+    api_path = os.path.join(_DIR, dir_name, "api.py")
+    if not os.path.exists(api_path):
+        return None
+
+    hmp = os.path.join(_DIR, dir_name, "hermes", "modules")
+    if hmp not in sys.path:
+        sys.path.insert(0, hmp)
+
+    mod = types.ModuleType(mod_name)
+    mod.__file__ = api_path
+    mod.__package__ = mod_name
+    sys.modules[mod_name] = mod  # <-- register BEFORE exec
+
+    with open(api_path) as f:
+        exec(compile(f.read(), api_path, "exec"), mod.__dict__)
+
+    # Register all aliases
+    py_name = dir_name.replace("-", "_")
+    for alias in [f"{mod_name}.api", f"components.{py_name}", f"components.{py_name}.api"]:
+        sys.modules[alias] = mod
+    return mod
+
+def __getattr__(name: str):
     if name not in _COMPONENT_MAP:
-        raise AttributeError(f"module {__name__!r} has no attribute {name!r}")
-    actual = _COMPONENT_MAP[name]
-    # 先尝试导入 api.py，失败则导入包本身
-    try:
-        return importlib.import_module(f".{actual}.api", __package__)
-    except ImportError:
-        return importlib.import_module(f".{actual}", __package__)
+        raise AttributeError(f"No component: {name}")
+    return _load_api(_COMPONENT_MAP[name])
 
-def __dir__() -> list[str]:
+def __dir__():
     return list(_COMPONENT_MAP.keys())
+
+# Pre-load all components so import machinery can find them
+for _, dir_name in _COMPONENT_MAP.items():
+    try:
+        _load_api(dir_name)
+    except Exception:
+        pass

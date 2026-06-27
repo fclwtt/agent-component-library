@@ -48,7 +48,7 @@ class TUIProtocol(Protocol):
 
 def create_tui() -> TUIProtocol:
     """创建 TUI 实例"""
-    from .hermes.modules.tui_gateway.dashboard import TUIDashboard
+    from tui_gateway.dashboard import TUIDashboard
     return TUIDashboard()
 
 

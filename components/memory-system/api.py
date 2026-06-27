@@ -53,7 +53,7 @@ def create_memory_provider(provider_type: str = "local", **config) -> MemoryProv
     延迟导入 hermes 模块。
     """
     if provider_type == "local":
-        from .hermes.modules.agent.memory_manager import MemoryManager
+        from agent.memory_manager import MemoryManager
         return MemoryManager(**config)
     # mem0, holographic, honcho 等其他提供者按需添加
     raise ValueError(f"未知的记忆提供者类型: {provider_type}")
@@ -61,5 +61,5 @@ def create_memory_provider(provider_type: str = "local", **config) -> MemoryProv
 
 def create_memory_tool() -> object:
     """创建记忆工具（在 tool-system 中注册）"""
-    from .hermes.modules.tools.memory_tool import MemoryTool
+    from tools.memory_tool import MemoryTool
     return MemoryTool()

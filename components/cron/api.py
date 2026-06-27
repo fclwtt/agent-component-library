@@ -52,7 +52,7 @@ class CronManagerProtocol(Protocol):
 
 def create_cron_manager() -> CronManagerProtocol:
     """创建定时任务管理器"""
-    from .hermes.modules.gateway.cron_manager import CronManager
+    from gateway.cron_manager import CronManager
     return CronManager()
 
 

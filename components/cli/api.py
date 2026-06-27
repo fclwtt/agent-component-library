@@ -36,7 +36,7 @@ class CLIProtocol(Protocol):
 
 def create_cli() -> CLIProtocol:
     """创建 CLI 实例"""
-    from .hermes.modules.hermes_cli.main import CLIApp
+    from hermes_cli.main import CLIApp
     return CLIApp()
 
 
