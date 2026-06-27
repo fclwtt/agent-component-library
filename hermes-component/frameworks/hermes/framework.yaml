@@ -1,0 +1,153 @@
+name: hermes
+full_name: Hermes Agent
+description: Nous Research开发的AI Agent框架，支持多平台消息接入、工具调用、记忆管理
+version: 2026-06
+source: https://github.com/NousResearch/hermes-agent
+license: MIT
+architecture:
+  style: layered
+  layers:
+  - name: cli
+    description: CLI入口层
+    components: []
+  - name: gateway
+    description: 消息网关层
+    components:
+    - gateway-core
+    - session-management
+    - gateway-config
+    - message-delivery
+    - gateway-hooks
+  - name: core-engine
+    description: 核心引擎层
+    components:
+    - agent-loop
+    - prompt-engine
+    - memory-core
+    - tool-execution
+    - context-management
+    - error-handling
+    - llm-client
+    - llm-adapters
+  - name: tools
+    description: 工具层
+    components:
+    - terminal-tool
+    - file-tool
+    - browser-tool
+    - mcp-tool
+    - web-search-tool
+    - vision-tool
+    - tts-tool
+    - image-gen-tool
+    - video-gen-tool
+    - delegate-tool
+    - skill-tool
+    - cronjob-tool
+    - kanban-tool
+    - approval-tool
+    - clarify-tool
+    - session-search-tool
+    - computer-use-tool
+    - transcription-tool
+    - process-registry
+    - checkpoint-manager
+    - todo-tool
+    - send-message-tool
+    - x-search-tool
+  - name: infrastructure
+    description: 基础设施层
+    components:
+    - state-management
+    - constants-config
+    - logging-system
+    - toolset-management
+    - display-system
+    - credential-management
+    - security
+  - name: environment
+    description: 执行环境层
+    components:
+    - execution-environments
+components:
+- agent-loop
+- prompt-engine
+- memory-core
+- tool-execution
+- context-management
+- error-handling
+- llm-client
+- llm-adapters
+- terminal-tool
+- file-tool
+- browser-tool
+- mcp-tool
+- web-search-tool
+- vision-tool
+- tts-tool
+- image-gen-tool
+- video-gen-tool
+- delegate-tool
+- skill-tool
+- cronjob-tool
+- kanban-tool
+- approval-tool
+- clarify-tool
+- session-search-tool
+- computer-use-tool
+- transcription-tool
+- process-registry
+- checkpoint-manager
+- todo-tool
+- send-message-tool
+- x-search-tool
+- gateway-core
+- session-management
+- gateway-config
+- message-delivery
+- gateway-hooks
+- state-management
+- constants-config
+- logging-system
+- toolset-management
+- display-system
+- credential-management
+- security
+- execution-environments
+data_flow:
+  description: 用户消息 → 网关层 → 核心引擎层(Agent Loop) → 工具层 → 返回结果
+  flow:
+  - from: user
+    to: gateway-core
+    via: platform-adapter
+  - from: gateway-core
+    to: agent-loop
+    via: session-management
+  - from: agent-loop
+    to: prompt-engine
+    action: 构建Prompt
+  - from: agent-loop
+    to: llm-client
+    action: 调用LLM
+  - from: agent-loop
+    to: tool-execution
+    action: 执行工具
+  - from: tool-execution
+    to: tool-registry
+    action: 查找工具
+  - from: agent-loop
+    to: memory-core
+    action: 读写记忆
+  - from: agent-loop
+    to: context-management
+    action: 压缩上下文
+  - from: agent-loop
+    to: gateway-core
+    action: 返回结果
+stats:
+  total_components: 44
+  core_engine: 8
+  tools: 23
+  gateway: 5
+  infrastructure: 7
+  environment: 1

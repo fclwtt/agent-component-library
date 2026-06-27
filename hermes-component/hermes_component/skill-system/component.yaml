@@ -1,0 +1,14 @@
+name: Skill System
+id: skill-system
+description: 技能系统，包含技能管理、技能加载、技能执行
+category: extension
+version: 1.0.0
+implementations:
+  hermes:
+    source: NousResearch/hermes-agent
+    commit: '503867864'
+    modules: 28
+interfaces:
+  provides: []
+  requires: ['tool-registry', 'memory-provider']
+dependencies: []

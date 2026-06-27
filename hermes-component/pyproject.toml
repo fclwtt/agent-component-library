@@ -1,0 +1,32 @@
+[build-system]
+requires = ["setuptools>=68.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "hermes-component"
+version = "2.0.0"
+description = "Hermes Agent 拆解标准化组件库"
+requires-python = ">=3.10"
+license = {text = "MIT"}
+dependencies = ["pyyaml>=6.0"]
+
+[tool.setuptools.packages.find]
+include = ["hermes_component*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
+asyncio_mode = "auto"
+markers = [
+    "unit: Unit tests for individual api.py",
+    "integration: Cross-component integration tests",
+    "lint: Static analysis and import isolation checks",
+]
+
+[tool.isort]
+profile = "black"
+line_length = 100
+
+[tool.coverage.run]
+source = ["hermes_component"]
+omit = ["*/hermes/*"]

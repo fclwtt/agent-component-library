@@ -1,0 +1,14 @@
+name: TUI System
+id: tui
+description: 终端用户界面系统，包含TUI网关、终端界面渲染
+category: interface
+version: 1.0.0
+implementations:
+  hermes:
+    source: NousResearch/hermes-agent
+    commit: '503867864'
+    modules: 10
+interfaces:
+  provides: []
+  requires: ['llm-calling', 'tool-registry']
+dependencies: []
