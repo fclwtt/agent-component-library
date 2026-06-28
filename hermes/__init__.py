@@ -42,6 +42,16 @@ def _load_api(dir_name: str):
         sys.modules[alias] = mod
     return mod
 
+# Core components (always present, paths available to all)
+_CORE = {
+    "state-management", "infrastructure", "entry-points",
+    "llm-client", "tool-system", "agent-engine",
+}
+for _c in _CORE:
+    _p = os.path.join(_DIR, _c, "modules")
+    if os.path.isdir(_p) and _p not in sys.path:
+        sys.path.append(_p)
+
 def __getattr__(name: str):
     if name not in _COMPONENT_MAP:
         raise AttributeError(f"No component: {name}")
