@@ -23,7 +23,7 @@ def _load_api(dir_name: str):
     if not os.path.exists(api_path):
         return None
 
-    hmp = os.path.join(_DIR, dir_name, "hermes", "modules")
+    hmp = os.path.join(_DIR, dir_name, "modules")
     if hmp not in sys.path:
         sys.path.insert(0, hmp)
 
