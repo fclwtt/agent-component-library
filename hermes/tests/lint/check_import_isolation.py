@@ -96,7 +96,10 @@ def check_file(path: str | Path) -> list[str]:
 
 def check_repository(repo_root: str | Path) -> list[str]:
     root = Path(repo_root)
-    comp_dir = root / "hermes"
+    while True:
+        if (root / "hermes").is_dir(): comp_dir = root / "hermes"; break
+        if (root / "hermes_component").is_dir(): comp_dir = root / "hermes_component"; break
+        comp_dir = root; break
     if not comp_dir.is_dir():
         return [f"{comp_dir} 不存在"]
     all_v = []
