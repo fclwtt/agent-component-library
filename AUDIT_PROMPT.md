@@ -1,49 +1,70 @@
 # Agent Component Library - 第三方审查任务
 
+## 任务
+
+审查 https://github.com/fclwtt/agent-component-library 仓库的组件隔离改造工作。
+
+审查报告请写入仓库根目录下的 `THIRD_PARTY_REVIEW.md`。
+
+## ⚠️ 重要：勿参考旧审计报告
+
+`audit/_archive/` 目录中存档的是早期（v1/v2）审计报告，数据已过时（例如"拆解进度 18.3%"引用的是最初阶段的数据，不代表当前状态）。请忽略这些文件，基于当前代码独立审查。
+
 ## 项目背景
 
-这是一个 AI Agent 组件库，从开源 Hermes Agent 框架拆解出 15 个标准化组件，目标是构建一个模块化、可独立装卸的 Agent 框架底座。
+该仓库是一个 AI Agent 组件库，从 Hermes Agent 框架拆解出 15 个标准化组件。改造的核心思路：
 
-改造前：Hermes 是一个单体仓库，模块之间互相 import，无法独立使用。
-改造目标：每个组件独立可运行，组件间通过 api.py 接口通信，无运行时依赖。
+1. **不是所有组件都必须独立。** 6 个 Core 组件（state-management、infrastructure、entry-points、llm-client、tool-system、agent-engine）构成系统底座，允许它们之间有受控耦合。Core 组件的 modules/ 路径全局可用，彼此可直接引用。
 
-## 仓库地址
+2. **9 个 Optional 组件（cli、tui、gateway、plugin-system、skill-system、cron、memory-system、security、acp-adapter）必须完全独立。** 每个 Optional 组件自身带有运行所需的全部代码副本，不依赖其他 Optional 组件的模块。
 
-https://github.com/fclwtt/agent-component-library
+3. **每个组件通过 api.py 暴露公共接口**，其他组件通过 `from hermes.{name}.api import X` 调用。
 
-## 审查范围
+## 仓库结构
+
+```
+agent-component-library/
+├── hermes/                    ← 组件包
+│   ├── __init__.py            ← Python 包入口，含 _COMPONENT_MAP 和 __getattr__
+│   ├── tool-system/api.py     ← 15 个组件，每个有 api.py + modules/
+│   ├── agent-engine/api.py
+│   ├── ... 共 15 个组件
+│   ├── spec/interfaces/       ← 接口契约 YAML
+│   ├── tests/                 ← 测试
+│   ├── audit/                 ← 审计
+│   └── pyproject.toml
+├── magic-orange/              ← 存根
+├── scripts/push_to_github.py  ← 推送脚本
+├── Makefile
+└── pyproject.toml
+```
+
+## 审查维度
 
 ### 1. 结构合理性
 
-仓库最终的目录结构是否清晰合理？组件划分是否有逻辑？接口定义和实现是否分离？是否有冗余或缺失的目录层级？
+目录层级是否合理？组件划分是否清晰？README 和实际结构是否一致？
 
 ### 2. 组件独立性
 
-每个组件是否真正独立？验证一个组件被移除后，其他组件是否仍能正常工作。如果存在依赖关系，请指出具体是哪些组件依赖哪些组件，以及依赖的性质（强依赖/可降级）。
+验证 6 个 Core 组件之间的耦合是否受控、可维护。验证 9 个 Optional 组件是否确实不依赖其他 Optional 组件。如果一个 Optional 组件被移除，其他组件是否仍能正常工作。
 
-### 3. 接口设计质量
+### 3. 接口设计
 
-每个组件提供的公共 API（api.py）设计是否合理？接口契约（component.yaml）是否完整？Protocol 定义是否恰当？
+每个组件的 api.py 是否提供了清晰的 Protocol 和工厂函数？component.yaml 的接口声明是否完整？
 
-### 4. 测试覆盖
+### 4. 测试与质量
 
-测试是否覆盖了关键功能？测试能否可靠验证组件的独立性和接口契约的正确性？
+测试是否覆盖了关键功能？测试能否可靠验证组件的独立性？代码风格是否一致？
 
 ### 5. 构建与部署
 
-Python 包结构是否正确？pip install 是否可用？是否有明确的开发和部署流程？
-
-### 6. 代码质量
-
-代码风格、注释、文档是否一致？是否存在明显的设计问题或技术债务？
-
-## 验收标准（由你判断是否达成）
-
-- 组件之间不存在必须同时安装的硬依赖
-- 每个组件的公共接口清晰、可测试
-- 项目结构清晰，新开发者能快速理解
-- 构建、测试、部署流程可重复
+pip install 是否可用？构建、测试、推送流程是否可重复？
 
 ## 输出要求
 
-请给出每个审查维度的评估结论（通过/需改进/不通过），以及具体的发现和建议。指出你认为最重要的问题（最多 3 个），无论正面还是负面。
+审查结论写入 `THIRD_PARTY_REVIEW.md`，包含：
+- 每个维度的评估结论（通过 / 需改进 / 不通过）
+- 具体的发现和建议
+- 你认为最重要的 3 个问题（无论正面负面）
+- 总体评估
