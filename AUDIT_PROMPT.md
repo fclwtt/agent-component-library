@@ -1,178 +1,49 @@
-# Agent Component Library - 审查提示词
+# Agent Component Library - 第三方审查任务
 
-请对 [fclwtt/agent-component-library](https://github.com/fclwtt/agent-component-library) 仓库的改造工作进行全面审查。
+## 项目背景
 
----
+这是一个 AI Agent 组件库，从开源 Hermes Agent 框架拆解出 15 个标准化组件，目标是构建一个模块化、可独立装卸的 Agent 框架底座。
 
-## 一、仓库结构审查
+改造前：Hermes 是一个单体仓库，模块之间互相 import，无法独立使用。
+改造目标：每个组件独立可运行，组件间通过 api.py 接口通信，无运行时依赖。
 
-确认根目录结构：
+## 仓库地址
 
-```
-agent-component-library/
-├── hermes/                        ← Hermes 框架组件
-│   ├── __init__.py
-│   ├── tool-system/               ← 15 个组件，每组件有 api.py
-│   ├── agent-engine/
-│   ├── cli/
-│   ├── cron/
-│   ├── entry-points/
-│   ├── gateway/
-│   ├── infrastructure/
-│   ├── llm-client/
-│   ├── memory-system/
-│   ├── plugin-system/
-│   ├── security/
-│   ├── skill-system/
-│   ├── state-management/
-│   ├── tui/
-│   ├── spec/interfaces/           ← 接口契约 YAML
-│   ├── spec/frameworks/           ← 框架组装
-│   ├── audit/
-│   ├── tests/
-│   └── pyproject.toml
-├── magic-orange/                  ← 存根
-├── scripts/push_to_github.py
-├── Makefile
-├── pyproject.toml
-├── index.yaml
-├── README.md
-└── AUDIT_PROMPT.md
-```
+https://github.com/fclwtt/agent-component-library
 
-检查项：
-- [ ] 根目录结构与上图一致
-- [ ] hermes/__init__.py 存在，含 _COMPONENT_MAP 和 __getattr__
-- [ ] 每个组件有 api.py、component.yaml、modules/
-- [ ] spec/interfaces/ 下有 6 个 YAML 接口定义
+## 审查范围
 
----
+### 1. 结构合理性
 
-## 二、组件独立性审查
+仓库最终的目录结构是否清晰合理？组件划分是否有逻辑？接口定义和实现是否分离？是否有冗余或缺失的目录层级？
 
-### 2.1 跨组件引用扫描
+### 2. 组件独立性
 
-从项目根目录运行：
+每个组件是否真正独立？验证一个组件被移除后，其他组件是否仍能正常工作。如果存在依赖关系，请指出具体是哪些组件依赖哪些组件，以及依赖的性质（强依赖/可降级）。
 
-```python
-import ast, os
-from pathlib import Path
-from collections import defaultdict
+### 3. 接口设计质量
 
-H = Path('hermes')
-COMPS = sorted([d.name for d in H.iterdir() if d.is_dir()
-    and not d.name.startswith(('_','.'))
-    and d.name not in ('spec','audit','tests')])
+每个组件提供的公共 API（api.py）设计是否合理？接口契约（component.yaml）是否完整？Protocol 定义是否恰当？
 
-comp_files = {}
-for c in COMPS:
-    files = set()
-    base = H / c / 'modules'
-    if base.is_dir():
-        for item in base.rglob('*.py'):
-            if item.name == '__init__.py': continue
-            rel = item.relative_to(base)
-            files.add(str(rel.with_suffix('')))
-    comp_files[c] = files
+### 4. 测试覆盖
 
-STDLIB = {'os','sys','json','re','typing','io','abc','enum',
-    'dataclasses','pathlib','functools','itertools','collections',
-    'asyncio','logging','hashlib','uuid','datetime','math',
-    'textwrap','base64','copy','inspect','warnings','traceback',
-    'signal','subprocess','threading','multiprocessing','time',
-    'http','urllib','xml','csv','html','string','struct','pickle',
-    'shelve','tempfile','shutil','glob','fnmatch','linecache',
-    '__future__','ssl','socket'}
+测试是否覆盖了关键功能？测试能否可靠验证组件的独立性和接口契约的正确性？
 
-found = 0
-for src in COMPS:
-    for py_file in sorted((H / src).rglob('*.py')):
-        if py_file.name in ('api.py', '__init__.py'): continue
-        try:
-            with open(py_file) as f: tree = ast.parse(f.read())
-        except SyntaxError: continue
-        for node in ast.walk(tree):
-            mods = []
-            if isinstance(node, ast.Import):
-                for a in node.names: mods.append(a.name)
-            elif isinstance(node, ast.ImportFrom) and node.module:
-                mods.append(node.module)
-            for mod_name in mods:
-                mod_path = '/'.join(mod_name.split('.'))
-                parts = mod_name.split('.')
-                if not parts or parts[0] in STDLIB: continue
-                for target in COMPS:
-                    if target == src: continue
-                    if mod_path in comp_files.get(target, set()) \
-                        and mod_path not in comp_files.get(src, set()):
-                        found += 1
-                        break
+### 5. 构建与部署
 
-print(f'Cross-component imports: {found}')
-```
+Python 包结构是否正确？pip install 是否可用？是否有明确的开发和部署流程？
 
-- [ ] 结果为 0
-- [ ] 非零则列出具体引用
+### 6. 代码质量
 
-### 2.2 导入验证
+代码风格、注释、文档是否一致？是否存在明显的设计问题或技术债务？
 
-```bash
-/opt/homebrew/bin/python3.13 -c "
-import sys; sys.path.insert(0, '.')
-from hermes import tool_system, agent_engine, cli, cron
-from hermes import entry_points, gateway, infrastructure, llm_client
-from hermes import memory_system, plugin_system, security, skill_system
-from hermes import state_management, acp_adapter, tui
-print('All 15 OK')
-"
-```
+## 验收标准（由你判断是否达成）
 
-- [ ] 15 个组件全部可导入
-- [ ] 格式为 from hermes.{name} import ...
+- 组件之间不存在必须同时安装的硬依赖
+- 每个组件的公共接口清晰、可测试
+- 项目结构清晰，新开发者能快速理解
+- 构建、测试、部署流程可重复
 
----
+## 输出要求
 
-## 三、测试审查
-
-```bash
-/opt/homebrew/bin/python3.13 -m pytest hermes/tests/ -q
-/opt/homebrew/bin/python3.13 hermes/tests/lint/check_import_isolation.py hermes
-```
-
-- [ ] 全部通过，无 FAILED
-- [ ] 隔离检查输出 PASS，语法错误警告可忽略
-
----
-
-## 四、组件隔离完整性
-
-抽查 3 个组件目录，确认每个 hermes 模块的 import 语句只引用：
-1. 标准库
-2. 本组件 modules/ 内的其他模块
-3. 不引用其他组件的 modules/
-
-```bash
-cd hermes
-for comp in tool-system agent-engine cli; do
-    found=$(grep -r "^from " $comp/modules/ --include="*.py" | grep -v "__future__\|typing\|os\|sys\|json\|re\|io\|abc\|enum\|dataclasses\|pathlib\|functools\|itertools\|collections\|asyncio\|logging\|hashlib\|uuid\|datetime\|math\|textwrap\|base64\|copy\|inspect\|warnings\|signal\|subprocess\|threading\|time\|http\|ssl\|socket" | grep -v "^from $comp" | wc -l)
-    echo "$comp: $found cross-module refs"
-done
-```
-
-- [ ] 3 个组件的 cross-module refs 均为 0
-
----
-
-## 五、整体评估
-
-| 维度 | 标准 | 结果 |
-|------|------|------|
-| 结构 | monorepo，15 组件 | □ 通过 □ 不通过 |
-| 独立性 | 跨组件引用 = 0 | □ 通过 □ 不通过 |
-| 测试 | 全部通过 | □ 通过 □ 不通过 |
-| 隔离检查 | 0 违规 | □ 通过 □ 不通过 |
-| api.py | 15 个都有 | □ 通过 □ 不通过 |
-| Python | 3.13 可用 | □ 通过 □ 不通过 |
-| 推送 | make push 可用 | □ 通过 □ 不通过 |
-
-总体结论：□ 通过 □ 需修复
+请给出每个审查维度的评估结论（通过/需改进/不通过），以及具体的发现和建议。指出你认为最重要的问题（最多 3 个），无论正面还是负面。
