@@ -1,14 +1,15 @@
 # Agent Component Library - 第三方审查任务
 
+审查依据文件：`AUDIT_PROMPT.md`（本文件）
+审查报告输出：`THIRD_PARTY_REVIEW.md`（请写入仓库根目录）
+
 ## 任务
 
 审查 https://github.com/fclwtt/agent-component-library 仓库的组件隔离改造工作。
 
-审查报告请写入仓库根目录下的 `THIRD_PARTY_REVIEW.md`。
-
 ## ⚠️ 重要：勿参考旧审计报告
 
-`audit/_archive/` 目录中存档的是早期（v1/v2）审计报告，数据已过时（例如"拆解进度 18.3%"引用的是最初阶段的数据，不代表当前状态）。请忽略这些文件，基于当前代码独立审查。
+`audit/_archive/` 目录中存档的是早期（v1/v2）审计报告，数据已过时。请忽略这些文件，基于当前代码独立审查。
 
 ## 项目背景
 
@@ -24,41 +25,31 @@
 
 ```
 agent-component-library/
-├── hermes/                    ← 组件包
-│   ├── __init__.py            ← Python 包入口，含 _COMPONENT_MAP 和 __getattr__
-│   ├── tool-system/api.py     ← 15 个组件，每个有 api.py + modules/
-│   ├── agent-engine/api.py
-│   ├── ... 共 15 个组件
-│   ├── spec/interfaces/       ← 接口契约 YAML
-│   ├── tests/                 ← 测试
-│   ├── audit/                 ← 审计
-│   └── pyproject.toml
-├── magic-orange/              ← 存根
-├── scripts/push_to_github.py  ← 推送脚本
-├── Makefile
-└── pyproject.toml
+└── hermes/
+    ├── __init__.py            ← Python 包入口
+    ├── tool-system/api.py     ← 15 个组件，每个有 api.py + modules/
+    ├── agent-engine/api.py
+    ├── ... 
+    ├── spec/interfaces/       ← 接口契约 YAML
+    ├── tests/                 ← 测试
+    └── audit/_archive/        ← ⚠️ 已过时，勿参考
 ```
 
 ## 审查维度
 
 ### 1. 结构合理性
-
-目录层级是否合理？组件划分是否清晰？README 和实际结构是否一致？
+目录层级是否清晰？组件划分是否合理？README 与实际结构是否一致？
 
 ### 2. 组件独立性
-
-验证 6 个 Core 组件之间的耦合是否受控、可维护。验证 9 个 Optional 组件是否确实不依赖其他 Optional 组件。如果一个 Optional 组件被移除，其他组件是否仍能正常工作。
+6 个 Core 组件之间的耦合是否受控？9 个 Optional 组件是否确实不依赖其他 Optional 组件？移除一个 Optional 组件后其他组件是否仍能正常工作？
 
 ### 3. 接口设计
-
-每个组件的 api.py 是否提供了清晰的 Protocol 和工厂函数？component.yaml 的接口声明是否完整？
+api.py 是否提供清晰的 Protocol 和工厂函数？component.yaml 的接口声明是否完整？
 
 ### 4. 测试与质量
-
-测试是否覆盖了关键功能？测试能否可靠验证组件的独立性？代码风格是否一致？
+测试是否覆盖关键功能？是否能可靠验证组件独立性？代码风格是否一致？
 
 ### 5. 构建与部署
-
 pip install 是否可用？构建、测试、推送流程是否可重复？
 
 ## 输出要求
@@ -66,5 +57,5 @@ pip install 是否可用？构建、测试、推送流程是否可重复？
 审查结论写入 `THIRD_PARTY_REVIEW.md`，包含：
 - 每个维度的评估结论（通过 / 需改进 / 不通过）
 - 具体的发现和建议
-- 你认为最重要的 3 个问题（无论正面负面）
+- 最重要的 3 个问题（无论正面负面）
 - 总体评估
